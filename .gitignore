@@ -1,2 +1,3 @@
-templates/*.txt
+templates/**/*.txt
 tmp
+.env
