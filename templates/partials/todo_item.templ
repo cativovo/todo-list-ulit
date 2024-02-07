@@ -1,7 +1,11 @@
 package partials
 
 import "github.com/cativovo/todo-list-ulit/pkg/todo"
+import "fmt"
 
 templ TodoItem(t todo.Todo) {
-	<li>{ t.Title }</li>
+	<li>
+		{ t.Title }
+		<button hx-delete={ fmt.Sprintf("/todo/%s", t.ID) } hx-target="closest li" hx-swap="delete">delete</button>
+	</li>
 }

@@ -10,10 +10,8 @@ import "context"
 import "io"
 import "bytes"
 
-import (
-	"github.com/cativovo/todo-list-ulit/pkg/todo"
-	"github.com/cativovo/todo-list-ulit/templates/partials"
-)
+import "github.com/cativovo/todo-list-ulit/pkg/todo"
+import "github.com/cativovo/todo-list-ulit/templates/partials"
 
 func HomePage(t []todo.Todo) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
