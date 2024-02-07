@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/cativovo/todo-list-ulit/pkg/todo"
-	"github.com/cativovo/todo-list-ulit/templates"
+	partialsTemplates "github.com/cativovo/todo-list-ulit/templates/partials"
 	"github.com/labstack/echo/v4"
 )
 
@@ -27,8 +27,8 @@ func (h *handlers) addTodo(c echo.Context) error {
 	}
 	todo, err := h.todoService.AddTodo(t)
 	if err != nil {
-		return Render(c, http.StatusInternalServerError, templates.Error())
+		return Render(c, http.StatusInternalServerError, partialsTemplates.Error())
 	}
 
-	return Render(c, http.StatusOK, templates.TodoItem(todo))
+	return Render(c, http.StatusOK, partialsTemplates.TodoItem(todo))
 }

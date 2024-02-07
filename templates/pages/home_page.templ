@@ -1,6 +1,9 @@
-package templates
+package pages
 
-import "github.com/cativovo/todo-list-ulit/pkg/todo"
+import (
+	"github.com/cativovo/todo-list-ulit/pkg/todo"
+	"github.com/cativovo/todo-list-ulit/templates/partials"
+)
 
 templ HomePage(t []todo.Todo) {
 	<!DOCTYPE html>
@@ -19,7 +22,7 @@ templ HomePage(t []todo.Todo) {
 			</form>
 			<ul id="todo-list">
 				for _, todo := range t {
-					@TodoItem(todo)
+					@partials.TodoItem(todo)
 				}
 			</ul>
 		</body>
