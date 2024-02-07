@@ -1,0 +1,11 @@
+package templates
+
+import "github.com/cativovo/todo-list-ulit/pkg/todo"
+
+templ HomePage(t []todo.Todo) {
+	<ul>
+		for _, todo := range t {
+			<li>{ todo.Title }</li>
+		}
+	</ul>
+}
