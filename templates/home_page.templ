@@ -3,9 +3,25 @@ package templates
 import "github.com/cativovo/todo-list-ulit/pkg/todo"
 
 templ HomePage(t []todo.Todo) {
-	<ul>
-		for _, todo := range t {
-			<li>{ todo.Title }</li>
-		}
-	</ul>
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>Document</title>
+			<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+		</head>
+		<body>
+			<form hx-post="/todo" hx-swap="beforeend" hx-target="#todo-list">
+				<input type="text" name="title"/>
+				<input type="text" name="description"/>
+				<button type="submit">add todo</button>
+			</form>
+			<ul id="todo-list">
+				for _, todo := range t {
+					@TodoItem(todo)
+				}
+			</ul>
+		</body>
+	</html>
 }

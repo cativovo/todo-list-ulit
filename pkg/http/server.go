@@ -21,6 +21,7 @@ func NewServer(ts *todo.TodoService) *Server {
 		todoService: ts,
 	}
 
+	s.registerHandlers()
 	s.registerPages()
 
 	return s
