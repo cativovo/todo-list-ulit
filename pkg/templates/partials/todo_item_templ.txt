@@ -1,0 +1,3 @@
+<li>
+ <button hx-delete=\"
+\" hx-target=\"closest li\" hx-swap=\"delete\">delete</button></li>

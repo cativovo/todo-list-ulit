@@ -3,9 +3,9 @@ package http
 import (
 	"net/http"
 
+	pageTemplates "github.com/cativovo/todo-list-ulit/pkg/templates/pages"
+	"github.com/cativovo/todo-list-ulit/pkg/templates/partials"
 	"github.com/cativovo/todo-list-ulit/pkg/todo"
-	pageTemplates "github.com/cativovo/todo-list-ulit/templates/pages"
-	"github.com/cativovo/todo-list-ulit/templates/partials"
 	"github.com/labstack/echo/v4"
 )
 
