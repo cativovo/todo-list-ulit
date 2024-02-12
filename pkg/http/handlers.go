@@ -1,6 +1,7 @@
 package http
 
 import (
+	"html/template"
 	"net/http"
 
 	"github.com/cativovo/todo-list-ulit/pkg/todo"
@@ -10,6 +11,8 @@ import (
 type handlers struct {
 	todoService *todo.TodoService
 }
+
+var componentsTmpl = template.Must(template.ParseGlob(tmplDirectory + "components/*.html"))
 
 func (s *Server) registerHandlers() {
 	h := handlers{
@@ -21,25 +24,25 @@ func (s *Server) registerHandlers() {
 	s.echo.DELETE("/todo/:id", h.deleteTodo)
 }
 
-func (h *handlers) addTodo(c echo.Context) error {
+func (h *handlers) addTodo(ctx echo.Context) error {
 	t := todo.Todo{
-		Title:       c.FormValue("title"),
-		Description: c.FormValue("description"),
+		Title:       ctx.FormValue("title"),
+		Description: ctx.FormValue("description"),
 	}
 
-	_, err := h.todoService.AddTodo(t)
+	todo, err := h.todoService.AddTodo(t)
 	if err != nil {
 		return nil
 	}
 
-	return nil
+	return render(ctx, http.StatusOK, componentsTmpl.Lookup("todo"), todo)
 }
 
-func (h *handlers) updateTodo(c echo.Context) error {
+func (h *handlers) updateTodo(ctx echo.Context) error {
 	t := todo.Todo{
-		ID:          c.Param("id"),
-		Title:       c.FormValue("title"),
-		Description: c.FormValue("description"),
+		ID:          ctx.Param("id"),
+		Title:       ctx.FormValue("title"),
+		Description: ctx.FormValue("description"),
 	}
 
 	_, err := h.todoService.UpdateTodo(t)
@@ -50,8 +53,8 @@ func (h *handlers) updateTodo(c echo.Context) error {
 	return nil
 }
 
-func (h *handlers) deleteTodo(c echo.Context) error {
-	id := c.Param("id")
+func (h *handlers) deleteTodo(ctx echo.Context) error {
+	id := ctx.Param("id")
 
 	err := h.todoService.DeleteTodo(id)
 	if err != nil {
@@ -59,5 +62,5 @@ func (h *handlers) deleteTodo(c echo.Context) error {
 	}
 
 	// https://htmx.org/attributes/hx-delete/
-	return c.NoContent(http.StatusOK)
+	return ctx.NoContent(http.StatusOK)
 }
