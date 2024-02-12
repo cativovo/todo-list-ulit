@@ -4,10 +4,16 @@
   <input type="text" name="description" />
   <button type="submit">add</button>
 </form>
-<ul id="todos">
+
+<!-- prettier-ignore -->
+{{- if .Err -}}
+  {{template "error"}}
+{{- end -}}
+
+<ul id="todos" hx-boost="true">
   <!-- prettier-ignore -->
-  {{range .Todos}}
-    {{template "todo" .}}
-  {{end}}
+  {{- range .Todos -}}
+    {{- template "todo" . -}}
+  {{- end -}}
 </ul>
 {{- end -}}

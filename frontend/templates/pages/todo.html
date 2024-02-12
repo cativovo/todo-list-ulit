@@ -1,0 +1,17 @@
+{{- define "content" -}}
+
+<!-- prettier-ignore -->
+{{- if .Boosted -}}
+<title>{{.PageTitle}}</title>
+{{- end -}}
+
+<!-- prettier-ignore -->
+{{- if .Err -}}
+  {{template "error"}}
+{{- end -}}
+
+<h1>{{.Todo.Title}}</h1>
+<h1>{{.Todo.Description}}</h1>
+<h1>{{.Todo.CreatedAt}}</h1>
+
+{{- end -}}

@@ -17,7 +17,7 @@ func NewServer(ts *todo.TodoService) *Server {
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
-	e.Static("/", "assets")
+	e.Static("/assets", "assets")
 
 	s := &Server{
 		echo:        e,
