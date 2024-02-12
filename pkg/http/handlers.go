@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/cativovo/todo-list-ulit/pkg/todo"
-	partialsTemplates "github.com/cativovo/todo-list-ulit/templates/partials"
 	"github.com/labstack/echo/v4"
 )
 
@@ -28,12 +27,12 @@ func (h *handlers) addTodo(c echo.Context) error {
 		Description: c.FormValue("description"),
 	}
 
-	todo, err := h.todoService.AddTodo(t)
+	_, err := h.todoService.AddTodo(t)
 	if err != nil {
-		return Render(c, http.StatusInternalServerError, partialsTemplates.Error())
+		return nil
 	}
 
-	return Render(c, http.StatusOK, partialsTemplates.TodoItem(todo))
+	return nil
 }
 
 func (h *handlers) updateTodo(c echo.Context) error {
@@ -43,12 +42,12 @@ func (h *handlers) updateTodo(c echo.Context) error {
 		Description: c.FormValue("description"),
 	}
 
-	todo, err := h.todoService.UpdateTodo(t)
+	_, err := h.todoService.UpdateTodo(t)
 	if err != nil {
-		return Render(c, http.StatusInternalServerError, partialsTemplates.Error())
+		return nil
 	}
 
-	return Render(c, http.StatusOK, partialsTemplates.TodoItem(todo))
+	return nil
 }
 
 func (h *handlers) deleteTodo(c echo.Context) error {
@@ -56,7 +55,7 @@ func (h *handlers) deleteTodo(c echo.Context) error {
 
 	err := h.todoService.DeleteTodo(id)
 	if err != nil {
-		return Render(c, http.StatusInternalServerError, partialsTemplates.Error())
+		return nil
 	}
 
 	// https://htmx.org/attributes/hx-delete/

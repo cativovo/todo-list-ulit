@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en">
+  {{template "head.html" .}}
+  <body>
+    <ul>
+      <!-- prettier-ignore -->
+      {{range .}}
+        {{template "todo.html" .}}
+      {{end}}
+    </ul>
+  </body>
+</html>

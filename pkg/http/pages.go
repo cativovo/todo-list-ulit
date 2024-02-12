@@ -3,8 +3,6 @@ package http
 import (
 	"net/http"
 
-	pageTemplates "github.com/cativovo/todo-list-ulit/pkg/templates/pages"
-	"github.com/cativovo/todo-list-ulit/pkg/templates/partials"
 	"github.com/cativovo/todo-list-ulit/pkg/todo"
 	"github.com/labstack/echo/v4"
 )
@@ -24,8 +22,8 @@ func (s *Server) registerPages() {
 func (p *pages) homePage(c echo.Context) error {
 	todos, err := p.todoService.GetTodos()
 	if err != nil {
-		return Render(c, http.StatusInternalServerError, partials.Error())
+		return nil
 	}
 
-	return Render(c, http.StatusOK, pageTemplates.HomePage(todos))
+	return c.Render(http.StatusOK, "home.html", todos)
 }
