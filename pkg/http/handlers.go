@@ -32,6 +32,7 @@ func (h *handlers) addTodo(ctx echo.Context) error {
 
 	todo, err := h.todoService.AddTodo(t)
 	if err != nil {
+		// TODO: handle
 		return nil
 	}
 
@@ -47,6 +48,7 @@ func (h *handlers) updateTodo(ctx echo.Context) error {
 
 	_, err := h.todoService.UpdateTodo(t)
 	if err != nil {
+		// TODO: handle
 		return nil
 	}
 
@@ -58,7 +60,12 @@ func (h *handlers) deleteTodo(ctx echo.Context) error {
 
 	err := h.todoService.DeleteTodo(id)
 	if err != nil {
+		// TODO: handle
 		return nil
+	}
+
+	if ctx.Request().Header.Get("Redirect") == "true" {
+		htmxLocation(ctx, "/")
 	}
 
 	// https://htmx.org/attributes/hx-delete/

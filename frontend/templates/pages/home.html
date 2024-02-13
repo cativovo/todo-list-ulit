@@ -1,4 +1,10 @@
 {{- define "content" -}}
+
+<!-- prettier-ignore -->
+{{- if .Boosted -}}
+<title>{{.PageTitle}}</title>
+{{- end -}}
+
 <form hx-post="/todo" hx-target="#todos" hx-swap="afterbegin">
   <input type="text" name="title" />
   <input type="text" name="description" />

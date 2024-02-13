@@ -41,17 +41,26 @@ func (s *Server) registerPages() {
 
 func (p *pages) homePage(ctx echo.Context) error {
 	todos, err := p.todoService.GetTodos()
+	boosted := htmxBoosted(ctx)
 	data := map[string]any{
 		"PageTitle": "Home page",
 		"Todos":     todos,
 		"Err":       err != nil,
+		"Boosted":   boosted,
+	}
+
+	var tmpl *template.Template
+	if boosted {
+		tmpl = homePage.Lookup("content")
+	} else {
+		tmpl = homePage
 	}
 
 	if err != nil {
-		return render(ctx, http.StatusInternalServerError, homePage, data)
+		return render(ctx, http.StatusInternalServerError, tmpl, data)
 	}
 
-	return render(ctx, http.StatusOK, homePage, data)
+	return render(ctx, http.StatusOK, tmpl, data)
 }
 
 func (p *pages) todoPage(ctx echo.Context) error {
