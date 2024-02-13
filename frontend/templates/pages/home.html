@@ -1,25 +1,18 @@
 {{- define "content" -}}
-
-<!-- prettier-ignore -->
-{{- if .Boosted -}}
-<title>{{.PageTitle}}</title>
-{{- end -}}
-
-<form hx-post="/todo" hx-target="#todos" hx-swap="afterbegin">
-  <input type="text" name="title" />
-  <input type="text" name="description" />
-  <button type="submit">add</button>
-</form>
-
-<!-- prettier-ignore -->
-{{- if .Err -}}
-  {{template "error"}}
-{{- end -}}
-
-<ul id="todos" hx-boost="true">
-  <!-- prettier-ignore -->
-  {{- range .Todos -}}
-    {{- template "todo" . -}}
+  {{- if .Boosted -}}
+    <title>{{ .PageTitle }}</title>
   {{- end -}}
-</ul>
+
+  {{- template "todo-modal" . -}}
+
+  {{- if .Err -}}
+    {{ template "error" }}
+  {{- end -}}
+
+
+  <ul id="todos" hx-boost="true">
+    {{- range .Todos -}}
+      {{- template "todo" . -}}
+    {{- end -}}
+  </ul>
 {{- end -}}

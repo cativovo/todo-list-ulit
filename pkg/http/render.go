@@ -9,5 +9,10 @@ import (
 func render(ctx echo.Context, statusCode int, tmpl *template.Template, data any) error {
 	ctx.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
 	ctx.Response().Writer.WriteHeader(statusCode)
+
+	if tmpl == nil {
+		return ctx.HTML(statusCode, "")
+	}
+
 	return tmpl.Execute(ctx.Response().Writer, data)
 }

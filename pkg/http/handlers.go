@@ -20,7 +20,7 @@ func (s *Server) registerHandlers() {
 	}
 
 	s.echo.POST("/todo", h.addTodo)
-	s.echo.PUT("/todo/:id", h.updateTodo)
+	s.echo.PATCH("/todo/:id", h.updateTodo)
 	s.echo.DELETE("/todo/:id", h.deleteTodo)
 }
 
@@ -36,6 +36,8 @@ func (h *handlers) addTodo(ctx echo.Context) error {
 		return nil
 	}
 
+	ctx.Response().Header().Set(HXRetarget, "#todos")
+	ctx.Response().Header().Set(HXReswap, "afterbegin")
 	return render(ctx, http.StatusOK, componentsTmpl.Lookup("todo"), todo)
 }
 
@@ -46,13 +48,22 @@ func (h *handlers) updateTodo(ctx echo.Context) error {
 		Description: ctx.FormValue("description"),
 	}
 
-	_, err := h.todoService.UpdateTodo(t)
+	todo, err := h.todoService.UpdateTodo(t)
 	if err != nil {
+		ctx.Logger().Error(err)
 		// TODO: handle
 		return nil
 	}
 
-	return nil
+	data := todoPageProps{
+		PageTitle: "Todo page",
+		Todo:      todo,
+		Boosted:   false,
+		Err:       err != nil,
+	}
+
+	ctx.Response().Header().Set(HXTrigger, "refetchTodo")
+	return render(ctx, http.StatusNoContent, nil, data)
 }
 
 func (h *handlers) deleteTodo(ctx echo.Context) error {

@@ -39,14 +39,38 @@ func (s *Server) registerPages() {
 	s.echo.GET("/:id", p.todoPage)
 }
 
+type todoModalComponentProps struct {
+	ModalTitle     string
+	SubmitLabel    string
+	ShowModalLabel string
+	Method         string
+	Url            string
+}
+
+type homePageProps struct {
+	todoModalComponentProps
+	PageTitle string
+	Todos     []todo.Todo
+	Err       bool
+	Boosted   bool
+}
+
 func (p *pages) homePage(ctx echo.Context) error {
 	todos, err := p.todoService.GetTodos()
 	boosted := htmxBoosted(ctx)
-	data := map[string]any{
-		"PageTitle": "Home page",
-		"Todos":     todos,
-		"Err":       err != nil,
-		"Boosted":   boosted,
+
+	data := homePageProps{
+		todoModalComponentProps: todoModalComponentProps{
+			ModalTitle:     "Add Todo",
+			SubmitLabel:    "Add",
+			Method:         "post",
+			Url:            "/todo",
+			ShowModalLabel: "Add Todo",
+		},
+		PageTitle: "Home page",
+		Todos:     todos,
+		Err:       err != nil,
+		Boosted:   boosted,
 	}
 
 	var tmpl *template.Template
@@ -63,15 +87,30 @@ func (p *pages) homePage(ctx echo.Context) error {
 	return render(ctx, http.StatusOK, tmpl, data)
 }
 
+type todoPageProps struct {
+	todoModalComponentProps
+	PageTitle string
+	Todo      todo.Todo
+	Boosted   bool
+	Err       bool
+}
+
 func (p *pages) todoPage(ctx echo.Context) error {
 	id := ctx.Param("id")
 	todo, err := p.todoService.GetTodo(id)
 	boosted := htmxBoosted(ctx)
-	data := map[string]any{
-		"PageTitle": "Todo page",
-		"Todo":      todo,
-		"Boosted":   boosted,
-		"Err":       err != nil,
+	data := todoPageProps{
+		todoModalComponentProps: todoModalComponentProps{
+			ModalTitle:     "Update Todo",
+			SubmitLabel:    "Update",
+			Method:         "patch",
+			Url:            "/todo/" + todo.ID,
+			ShowModalLabel: "Update",
+		},
+		PageTitle: "Todo page",
+		Todo:      todo,
+		Boosted:   boosted,
+		Err:       err != nil,
 	}
 
 	var tmpl *template.Template
@@ -82,6 +121,7 @@ func (p *pages) todoPage(ctx echo.Context) error {
 	}
 
 	if err != nil {
+		ctx.Logger().Error(err)
 		return render(ctx, http.StatusInternalServerError, tmpl, data)
 	}
 
