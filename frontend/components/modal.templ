@@ -1,0 +1,24 @@
+package components
+
+type ModalProps struct {
+	Title       string
+	ButtonLabel string
+	Children    templ.Component
+	ID          string
+}
+
+script showModal(id string) {
+    document.getElementById(id).showModal()
+}
+
+script closeModal(id string) {
+    document.getElementById(id).close()
+}
+
+templ Modal (p ModalProps) {
+	<dialog id={ p.ID }>
+		<h2>{ p.Title }</h2>
+		@p.Children
+	</dialog>
+	<button onClick={ showModal(p.ID) }>{ p.ButtonLabel }</button>
+}

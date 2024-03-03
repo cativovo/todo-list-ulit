@@ -1,0 +1,12 @@
+package components
+
+import "github.com/cativovo/todo-list-ulit/pkg/todo"
+
+templ Todo(t todo.Todo) {
+	<li>
+		<a href={ templ.URL("/todo/" + t.ID) }>{ t.Title }</a>
+		<button hx-delete={ "/todo/" + t.ID } hx-target="closest li" hx-swap="delete">
+			delete
+		</button>
+	</li>
+}

@@ -1,0 +1,60 @@
+package components
+
+import "github.com/cativovo/todo-list-ulit/pkg/todo"
+
+type FormProps struct {
+	Htmx        templ.Attributes
+	Todo        todo.Todo
+	SubmitLabel string
+	ModalID     string
+}
+
+templ Form(p FormProps) {
+	<form
+		{ p.Htmx... }
+		hx-on::after-request={ closeModal(p.ModalID) }
+	>
+		<div class="sm:col-span-4">
+			<label
+				for="title"
+				class="block text-sm font-medium leading-6 text-gray-900"
+			>
+				Title
+			</label>
+			<div class="mt-2">
+				<input
+					id="title"
+					name="title"
+					type="text"
+					class="block py-1.5 w-full text-gray-900 rounded-md border-0 ring-1 ring-inset ring-gray-300 shadow-sm sm:text-sm sm:leading-6 focus:ring-2 focus:ring-inset focus:ring-indigo-600 placeholder:text-gray-400"
+					value={ p.Todo.Title }
+				/>
+			</div>
+		</div>
+		<div class="col-span-full">
+			<label
+				for="description"
+				class="block text-sm font-medium leading-6 text-gray-900"
+			>
+				Description
+			</label>
+			<div class="mt-2">
+				<textarea
+					id="description"
+					name="description"
+					rows="3"
+					class="block py-1.5 w-full text-gray-900 rounded-md border-0 ring-1 ring-inset ring-gray-300 shadow-sm sm:text-sm sm:leading-6 focus:ring-2 focus:ring-inset focus:ring-indigo-600 placeholder:text-gray-400"
+				>
+					{ p.Todo.Description }
+				</textarea>
+			</div>
+			<p class="mt-3 text-sm leading-6 text-gray-600">
+				Write a few sentences about your todo.
+			</p>
+		</div>
+		<div>
+			<button type="submit">{ p.SubmitLabel }</button>
+			<button type="button" onClick={ closeModal(p.ModalID) }>Close</button>
+		</div>
+	</form>
+}

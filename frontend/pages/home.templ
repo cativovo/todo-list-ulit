@@ -1,0 +1,27 @@
+package pages
+
+import "github.com/cativovo/todo-list-ulit/pkg/todo"
+import "github.com/cativovo/todo-list-ulit/frontend/components"
+
+type HomeProps struct {
+	Todos []todo.Todo
+	Title string
+}
+
+templ Home(h HomeProps) {
+	@components.Modal(components.ModalProps{
+		Title:       "test",
+		ButtonLabel: "open",
+		ID:          "modal",
+		Children: components.Form(components.FormProps{
+			Htmx:        templ.Attributes{"hx-post": "/todo", "hx-target": "#todos", "hx-swap": "afterbegin"},
+			ModalID:     "modal",
+			SubmitLabel: "submit",
+		}),
+	})
+	<ul id="todos" hx-boost="true">
+		for _, todo := range h.Todos {
+			@components.Todo(todo)
+		}
+	</ul>
+}

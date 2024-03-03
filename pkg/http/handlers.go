@@ -1,9 +1,9 @@
 package http
 
 import (
-	"html/template"
 	"net/http"
 
+	"github.com/cativovo/todo-list-ulit/frontend/components"
 	"github.com/cativovo/todo-list-ulit/pkg/todo"
 	"github.com/labstack/echo/v4"
 )
@@ -11,8 +11,6 @@ import (
 type handlers struct {
 	todoService *todo.TodoService
 }
-
-var componentsTmpl = template.Must(template.ParseGlob(tmplDirectory + "components/*.html"))
 
 func (s *Server) registerHandlers() {
 	h := handlers{
@@ -36,9 +34,7 @@ func (h *handlers) addTodo(ctx echo.Context) error {
 		return nil
 	}
 
-	ctx.Response().Header().Set(HXRetarget, "#todos")
-	ctx.Response().Header().Set(HXReswap, "afterbegin")
-	return render(ctx, http.StatusOK, componentsTmpl.Lookup("todo"), todo)
+	return render(ctx, http.StatusOK, components.Todo(todo))
 }
 
 func (h *handlers) updateTodo(ctx echo.Context) error {
@@ -48,22 +44,15 @@ func (h *handlers) updateTodo(ctx echo.Context) error {
 		Description: ctx.FormValue("description"),
 	}
 
-	todo, err := h.todoService.UpdateTodo(t)
+	_, err := h.todoService.UpdateTodo(t)
 	if err != nil {
 		ctx.Logger().Error(err)
 		// TODO: handle
 		return nil
 	}
 
-	data := todoPageProps{
-		PageTitle: "Todo page",
-		Todo:      todo,
-		Boosted:   false,
-		Err:       err != nil,
-	}
-
 	ctx.Response().Header().Set(HXTrigger, "refetchTodo")
-	return render(ctx, http.StatusNoContent, nil, data)
+	return ctx.NoContent(http.StatusNoContent)
 }
 
 func (h *handlers) deleteTodo(ctx echo.Context) error {

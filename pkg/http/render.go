@@ -1,18 +1,12 @@
 package http
 
 import (
-	"html/template"
-
+	"github.com/a-h/templ"
 	"github.com/labstack/echo/v4"
 )
 
-func render(ctx echo.Context, statusCode int, tmpl *template.Template, data any) error {
+func render(ctx echo.Context, statusCode int, t templ.Component) error {
 	ctx.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
 	ctx.Response().Writer.WriteHeader(statusCode)
-
-	if tmpl == nil {
-		return ctx.HTML(statusCode, "")
-	}
-
-	return tmpl.Execute(ctx.Response().Writer, data)
+	return t.Render(ctx.Request().Context(), ctx.Response().Writer)
 }

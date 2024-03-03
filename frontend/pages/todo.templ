@@ -1,0 +1,47 @@
+package pages
+
+import "github.com/cativovo/todo-list-ulit/pkg/todo"
+import "encoding/json"
+import "github.com/cativovo/todo-list-ulit/frontend/components"
+
+type TodoProps struct {
+	Todo todo.Todo
+}
+
+func hxHeadersJSON() string {
+	hxHeaders := map[string]string{
+		"Redirect": "true",
+	}
+	b, err := json.Marshal(hxHeaders)
+	if err != nil {
+		return "{}"
+	}
+
+	return string(b)
+}
+
+templ Todo(t TodoProps) {
+	@components.Modal(components.ModalProps{
+		Title:       "test",
+		ButtonLabel: "open",
+		ID:          "modal",
+		Children: components.Form(components.FormProps{
+			Htmx:        templ.Attributes{"hx-patch": "/todo/" + t.Todo.ID},
+			ModalID:     "modal",
+			SubmitLabel: "update",
+			Todo:        t.Todo,
+		}),
+	})
+	<div
+		hx-trigger="refetchTodo from:body"
+		hx-get={ string(templ.URL("/todo/" + t.Todo.ID)) }
+		hx-target="body"
+	>
+		<h1>{ t.Todo.Title }</h1>
+		<p>{ t.Todo.Description }</p>
+		<p>{ t.Todo.CreatedAt.String() }</p>
+		<button hx-delete={ string(templ.URL("/todo/" + t.Todo.ID)) } hx-headers={ hxHeadersJSON() }>
+			delete
+		</button>
+	</div>
+}
