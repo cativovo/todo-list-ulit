@@ -3,8 +3,8 @@ package http
 import (
 	"net/http"
 
-	"github.com/cativovo/todo-list-ulit/frontend/components"
 	"github.com/cativovo/todo-list-ulit/pkg/todo"
+	"github.com/cativovo/todo-list-ulit/web/components"
 	"github.com/labstack/echo/v4"
 )
 

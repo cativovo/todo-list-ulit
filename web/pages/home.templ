@@ -1,7 +1,7 @@
 package pages
 
 import "github.com/cativovo/todo-list-ulit/pkg/todo"
-import "github.com/cativovo/todo-list-ulit/frontend/components"
+import "github.com/cativovo/todo-list-ulit/web/components"
 
 type HomeProps struct {
 	Todos []todo.Todo
@@ -10,8 +10,8 @@ type HomeProps struct {
 
 templ Home(h HomeProps) {
 	@components.Modal(components.ModalProps{
-		Title:       "test",
-		ButtonLabel: "open",
+		Title:       "Add Todo",
+		ButtonLabel: "Add Todo",
 		ID:          "modal",
 		Children: components.Form(components.FormProps{
 			Htmx:        templ.Attributes{"hx-post": "/todo", "hx-target": "#todos", "hx-swap": "afterbegin"},

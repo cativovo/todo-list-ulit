@@ -1,8 +1,0 @@
-{{- block "todo" . -}}
-  <li>
-    <a href="/{{ .ID }}">{{ .Title }}</a>
-    <button hx-delete="/todo/{{ .ID }}" hx-target="closest li" hx-swap="delete">
-      delete
-    </button>
-  </li>
-{{- end -}}

@@ -11,8 +11,6 @@ type Server struct {
 	todoService *todo.TodoService
 }
 
-const tmplDirectory = "frontend/templates/"
-
 func NewServer(ts *todo.TodoService) *Server {
 	e := echo.New()
 	e.Use(middleware.Logger())

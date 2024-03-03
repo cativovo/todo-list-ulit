@@ -2,7 +2,7 @@ package pages
 
 import "github.com/cativovo/todo-list-ulit/pkg/todo"
 import "encoding/json"
-import "github.com/cativovo/todo-list-ulit/frontend/components"
+import "github.com/cativovo/todo-list-ulit/web/components"
 
 type TodoProps struct {
 	Todo todo.Todo
@@ -22,8 +22,8 @@ func hxHeadersJSON() string {
 
 templ Todo(t TodoProps) {
 	@components.Modal(components.ModalProps{
-		Title:       "test",
-		ButtonLabel: "open",
+		Title:       "Update Todo",
+		ButtonLabel: "Update",
 		ID:          "modal",
 		Children: components.Form(components.FormProps{
 			Htmx:        templ.Attributes{"hx-patch": "/todo/" + t.Todo.ID},
