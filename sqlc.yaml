@@ -1,0 +1,10 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "./sql/query"
+    schema: "./sql/schema"
+    gen:
+      go:
+        package: "tododb"
+        out: "./pkg/repository/postgres/generated"
+        sql_package: "pgx/v5"

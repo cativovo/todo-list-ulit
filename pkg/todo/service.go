@@ -1,5 +1,7 @@
 package todo
 
+import "errors"
+
 type Repository interface {
 	AddTodo(t Todo) (Todo, error)
 	GetTodo(id string) (Todo, error)
@@ -7,6 +9,8 @@ type Repository interface {
 	UpdateTodo(t Todo) (Todo, error)
 	DeleteTodo(id string) error
 }
+
+var ErrNotFound = errors.New("todo not found")
 
 type TodoService struct {
 	repository Repository

@@ -30,8 +30,8 @@ func (h *handlers) addTodo(ctx echo.Context) error {
 
 	todo, err := h.todoService.AddTodo(t)
 	if err != nil {
-		// TODO: handle
-		return nil
+		ctx.Logger().Error(err)
+		return err
 	}
 
 	return render(ctx, http.StatusOK, components.Todo(todo))

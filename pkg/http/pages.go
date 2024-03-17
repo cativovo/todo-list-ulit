@@ -1,6 +1,7 @@
 package http
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/cativovo/todo-list-ulit/pkg/todo"
@@ -40,14 +41,18 @@ func (p *pages) homePage(ctx echo.Context) error {
 func (p *pages) todoPage(ctx echo.Context) error {
 	pageTitle := "Todo"
 	id := ctx.Param("id")
-	todo, err := p.todoService.GetTodo(id)
+	foundTodo, err := p.todoService.GetTodo(id)
 	if err != nil {
+		if errors.Is(err, todo.ErrNotFound) {
+			return render(ctx, http.StatusNotFound, layouts.Base(pageTempl.Error(), pageTitle, false))
+		}
+
 		ctx.Logger().Error(err)
 		return render(ctx, http.StatusInternalServerError, layouts.Base(pageTempl.Error(), pageTitle, false))
 	}
 
 	todoProps := pageTempl.TodoProps{
-		Todo: todo,
+		Todo: foundTodo,
 	}
 
 	return render(ctx, http.StatusOK, layouts.Base(pageTempl.Todo(todoProps), pageTitle, htmxBoosted(ctx)))
