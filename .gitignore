@@ -4,3 +4,4 @@ tmp
 node_modules
 assets
 *_templ.go
+__debug*
